@@ -1,19 +1,23 @@
-import { error } from "console";
-import mongoose, { connection } from "mongoose";
+
+import mongoose from "mongoose";
+
 
 export async function connect(){
     try {
-        mongoose.connect(process.env.MONGO_URI!);
-        const connection=mongoose.connection;
+        const key=process.env.MONGO_URI;
 
-        connection.on('connected',()=>{
-            console.log("DB connection success!")
-        })
+        mongoose.connect(`${key}`!);
+        const connection=mongoose.connection;
 
         connection.on('error',(error)=>{
             console.log("mongo db connection error"+error);
             process.exit();
         })
+
+        connection.on('connected',()=>{
+            console.log("DB connection success!")
+        })
+        
     } catch (error) {
         console.log('something went wrong',error)
     }
